@@ -4,86 +4,65 @@ from application import Application
 import telebot
 
 if __name__ == '__main__':
-    bot = telebot.TeleBot("6298565882:AAEbeyIie_F1xL-9QKOu0G03TwjjS95tUgk", parse_mode=None)
+    # Убрать хардкод
+    bot = telebot.TeleBot("5935761898:AAGzVoZToD9ttlbcjJ_bF5SypJQ7tPTaS-w", parse_mode=None)
 
-    app = Application()
-
-    user_information = {}
-
-    menu_buttons = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-    button_currency = KeyboardButton('Вывести актуальный курс')
-    button_salary = KeyboardButton('Вывести актуальную зп')
-    button_update_currencies = KeyboardButton('Изменить отслеживаемые валюты')
-    button_update_salary = KeyboardButton('Изменить установленную зп')
-    menu_buttons.add(button_currency, button_salary, button_update_currencies, button_update_salary)
-
+    commands = [
+        telebot.types.BotCommand('add_income', 'Добавить доход'),
+        telebot.types.BotCommand('add_investment', 'Добавить инвестицию'),
+        telebot.types.BotCommand('delete_income', 'Удалить доход'),
+        telebot.types.BotCommand('delete_investment', 'Удалить инвестицию'),
+        telebot.types.BotCommand('add_new_report', 'Добавить новый отчет'),
+        telebot.types.BotCommand('change_income', 'Изменить доход'),
+        telebot.types.BotCommand('income_history', 'Вывести отчет о доходах'),
+        telebot.types.BotCommand('investment_history', 'Вывести отчет об инвестициях')
+    ]
 
     @bot.message_handler(commands=['start'])
     def start_bot(message):
+        # Убрать хардкод
         if message.from_user.id == 266532751:
-            bot.send_message(message.from_user.id, "Введите свою зп c валютой: ")
-            bot.register_next_step_handler(message, get_salary_information)
+            bot.send_message(message.from_user.id, "Инициализация бота")
+            co = bot.set_my_commands(commands)
+
+    @bot.message_handler(commands=['add_income'])
+    def add_income_bot(message):
+        bot.send_message(message.from_user.id, "Добавлен новый доход")
 
 
-    @bot.message_handler(func=lambda message: True)
-    def callback_handler(message):
-        if message.from_user.id == 266532751:
-            if message.text == 'Вывести актуальный курс':
-                reports = app.rate_report()
-                pretty_report = '\n'.join(reports)
-                bot.send_message(message.chat.id, pretty_report)
-            elif message.text == 'Вывести актуальную зп':
-                reports = app.salary_report()
-                pretty_report = '\n'.join(reports)
-                bot.send_message(message.chat.id, pretty_report)
-            elif message.text == 'Изменить отслеживаемые валюты':
-                bot.send_message(message.from_user.id, "Введите отслеживаемые валюты: ")
-                bot.register_next_step_handler(message, update_assigned_currencies)
-            elif message.text == 'Изменить установленную зп':
-                bot.send_message(message.from_user.id, "Введите свою зп c валютой: ")
-                bot.register_next_step_handler(message, update_salary_information)
-            else:
-                bot.send_message(message.chat.id, "Неизвестная команда")
-        else:
-            bot.send_message(message.chat.id, "Доступ запрещен")
+    @bot.message_handler(commands=['add_investment'])
+    def add_investment_bot(message):
+        bot.send_message(message.from_user.id, "Добавлена новая инвестиция")
 
 
-    def update_salary_information(message):
-        salary = message.text.split()
-
-        user_information["value"] = salary[0]
-        user_information["currency"] = salary[1]
-
-        app.update_salary(user_information)
+    @bot.message_handler(commands=['delete_income'])
+    def delete_income_bot(message):
+        bot.send_message(message.from_user.id, "Удален доход")
 
 
-    def update_assigned_currencies(message):
-        currencies = message.text.split()
-
-        user_information["currencies"] = currencies
-
-        app.update_currencies(user_information)
+    @bot.message_handler(commands=['delete_investment'])
+    def delete_investment_bot(message):
+        bot.send_message(message.from_user.id, "Удалена инвестиция")
 
 
-    def get_salary_information(message):
-        salary = message.text.split()
-
-        user_information["value"] = salary[0]
-        user_information["currency"] = salary[1]
-
-        bot.send_message(message.from_user.id, "Введите отслеживаемые валюты: ")
-
-        bot.register_next_step_handler(message, get_assigned_currencies)
+    @bot.message_handler(commands=['add_new_report'])
+    def add_new_report_bot(message):
+        bot.send_message(message.from_user.id, "Добавлен новый отчет")
 
 
-    def get_assigned_currencies(message):
-        currencies = message.text.split()
+    @bot.message_handler(commands=['change_income'])
+    def change_income_bot(message):
+        bot.send_message(message.from_user.id, "Изменен доход")
 
-        user_information["currencies"] = currencies
 
-        bot.send_message(message.from_user.id, "Сбор информации завершен", reply_markup=menu_buttons)
+    @bot.message_handler(commands=['income_history'])
+    def income_history_bot(message):
+        bot.send_message(message.from_user.id, "Выведена история дохода")
 
-        app.start(user_information)
+
+    @bot.message_handler(commands=['investment_history'])
+    def investment_history_bot(message):
+        bot.send_message(message.from_user.id, "Выведена история инвестиций")
 
 
     bot.infinity_polling()

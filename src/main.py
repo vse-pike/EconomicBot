@@ -3,7 +3,11 @@ from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 from application import Application
 import telebot
 
+from src.db.db_settings import db_connect
+
 if __name__ == '__main__':
+    db_connect()
+
     # Убрать хардкод
     bot = telebot.TeleBot("5935761898:AAGzVoZToD9ttlbcjJ_bF5SypJQ7tPTaS-w", parse_mode=None)
 

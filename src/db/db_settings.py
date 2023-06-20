@@ -1,8 +1,25 @@
 from sqlalchemy import create_engine
-from src.models.db_models import Base
+from sqlalchemy.orm import sessionmaker
+
+from src.db.db_tables import mapper_registry as m
 
 
-def db_connect():
+def db_create_engine():
     path = "postgresql+psycopg2://user:123@localhost:5432/economic-bot"
     engine = create_engine(path, echo=True)
-    Base.metadata.create_all(engine)
+    m.metadata.create_all(engine)
+
+    return engine
+
+
+def db_create_session(engine):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    return session
+
+
+class Db:
+    def __init__(self):
+        self.engine = db_create_engine()
+        self.session = db_create_session(self.engine)

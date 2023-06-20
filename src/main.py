@@ -3,10 +3,11 @@ from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 from application import Application
 import telebot
 
-from src.db.db_settings import db_connect
+from src.db.db_settings import Db
+from src.handlers.income_handlers import IncomeHandler
 
 if __name__ == '__main__':
-    db_connect()
+    session = Db().session
 
     # Убрать хардкод
     bot = telebot.TeleBot("5935761898:AAGzVoZToD9ttlbcjJ_bF5SypJQ7tPTaS-w", parse_mode=None)
@@ -22,6 +23,7 @@ if __name__ == '__main__':
         telebot.types.BotCommand('investment_history', 'Вывести отчет об инвестициях')
     ]
 
+
     @bot.message_handler(commands=['start'])
     def start_bot(message):
         # Убрать хардкод
@@ -29,19 +31,30 @@ if __name__ == '__main__':
             bot.send_message(message.from_user.id, "Инициализация бота")
             co = bot.set_my_commands(commands)
 
-    @bot.message_handler(commands=['add_income'])
-    def add_income_bot(message):
-        bot.send_message(message.from_user.id, "Добавлен новый доход")
+
+    @bot.message_handler(commands=['add_income'], content_types=['text'])
+    def add_income_bot(command):
+        @bot.message_handler(content_types=['text'])
+        def income_message(message):
+            income_text = message.text
+            IncomeHandler.add_income(income_text, session)
+            bot.send_message(command.from_user.id, "Добавлен новый доход")
+
+
+    @bot.message_handler(commands=['delete_income'])
+    def delete_income_bot(command):
+
+        #Реализовать удаление через кнопки по существующим доходам
+        @bot.message_handler(content_types=['text'])
+        def income_message(message):
+            income_text = message.text
+            IncomeHandler.delete_income(income_text, session)
+            bot.send_message(command.from_user.id, "Удален доход")
 
 
     @bot.message_handler(commands=['add_investment'])
     def add_investment_bot(message):
         bot.send_message(message.from_user.id, "Добавлена новая инвестиция")
-
-
-    @bot.message_handler(commands=['delete_income'])
-    def delete_income_bot(message):
-        bot.send_message(message.from_user.id, "Удален доход")
 
 
     @bot.message_handler(commands=['delete_investment'])

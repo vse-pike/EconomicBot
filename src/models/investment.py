@@ -1,6 +1,7 @@
 class Investment:
-    def __init__(self, id_investment, name, value, currency, created_date, modified_date):
+    def __init__(self, id_investment, id_user, name, value, currency, created_date, modified_date):
         self.id_investment = id_investment
+        self.id_user = id_user
         self.name = name
         self.value = value
         self.currency = currency

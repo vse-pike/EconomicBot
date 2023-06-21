@@ -10,10 +10,14 @@ from datetime import datetime
 #         telebot.types.BotCommand('income_history', 'Вывести отчет о доходах'),
 #     ]
 
-def find_income_by_id(id_income, session):
+def get_income_by_id(id_income, session):
     income = session.query(Income).get(id_income)
 
     return income
+
+
+# def get_income_by_user(user_id, session):
+#     incomes = session.query(Income).get(user_id)
 
 
 def parse_content(content):
@@ -43,6 +47,7 @@ def get_parsed_values(content):
         name = parsed_content.get('NAM')
         value = parsed_content.get('VAL')
         currency = parsed_content.get('CUR')
+    # TODO: Реализовать обработку ошибок
     except KeyError:
         print('Такого ключа не существует')
 
@@ -52,24 +57,24 @@ def get_parsed_values(content):
 class IncomeHandler:
 
     @staticmethod
-    def add_income(content, session):
+    def add_income(content, chat_id, session):
         id_income = uuid.uuid4()
         name, value, currency = get_parsed_values(content)
         created_date = datetime.now()
-        income = Income(id_income, name, value, currency, created_date, created_date)
+        income = Income(id_income, chat_id, name, value, currency, created_date, created_date)
 
         session.add(income)
         session.commit()
 
     @staticmethod
     def delete_income(id_income, session):
-        if (income := find_income_by_id(id_income, session)) is not None:
+        if (income := get_income_by_id(id_income, session)) is not None:
             session.delete(income)
             session.commit()
 
     @staticmethod
     def change_income(id_income, content, session):
-        if (income := find_income_by_id(id_income, session)) is not None:
+        if (income := get_income_by_id(id_income, session)) is not None:
             name, value, currency = get_parsed_values(content)
 
             if name is not None:
@@ -84,7 +89,12 @@ class IncomeHandler:
 
             session.commit()
 
-    #TODO: Доделать, когда связь м/у таблицами репортов и дохода будет проработана
+    @staticmethod
+    def get_income_list(chat_id, session):
+        if (incomes := get_income_by_id(chat_id, session)) is not None:
+            print(incomes)
+
+    # TODO: Доделать, когда связь м/у таблицами репортов и дохода будет проработана
     @staticmethod
     def get_income_report(id_income, session):
         pass

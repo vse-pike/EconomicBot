@@ -9,7 +9,7 @@ from src.handlers.income_handlers import IncomeHandler
 if __name__ == '__main__':
     session = Db().session
 
-    # Убрать хардкод
+    #TODO: Убрать хардкод
     bot = telebot.TeleBot("5935761898:AAGzVoZToD9ttlbcjJ_bF5SypJQ7tPTaS-w", parse_mode=None)
 
     commands = [
@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     @bot.message_handler(commands=['start'])
     def start_bot(message):
-        # Убрать хардкод
+        #TODO: Убрать хардкод
         if message.from_user.id == 266532751:
             bot.send_message(message.from_user.id, "Инициализация бота")
             co = bot.set_my_commands(commands)
@@ -44,12 +44,23 @@ if __name__ == '__main__':
     @bot.message_handler(commands=['delete_income'])
     def delete_income_bot(command):
 
-        #Реализовать удаление через кнопки по существующим доходам
+        #TODO: Реализовать удаление через кнопки по существующим доходам
         @bot.message_handler(content_types=['text'])
         def income_message(message):
             income_text = message.text
             IncomeHandler.delete_income(income_text, session)
             bot.send_message(command.from_user.id, "Удален доход")
+
+
+    @bot.message_handler(commands=['change_income'])
+    def change_income_bot(command):
+        #TODO: Реализовать изменение данных через кнопки по существующим доходам
+        @bot.message_handler(content_types=['text'])
+        def income_message(message):
+            income_text = message.text
+            #TODO: Убрать хардкод
+            IncomeHandler.change_income('273e6823-acc5-473f-9b92-788a570b3f9f', income_text, session)
+            bot.send_message(command.from_user.id, "Изменен доход")
 
 
     @bot.message_handler(commands=['add_investment'])

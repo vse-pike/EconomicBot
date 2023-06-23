@@ -1,6 +1,7 @@
 from src.models.income import Income
 import uuid
 from datetime import datetime
+from sqlalchemy import text
 
 
 # commands = [
@@ -10,14 +11,16 @@ from datetime import datetime
 #         telebot.types.BotCommand('income_history', 'Вывести отчет о доходах'),
 #     ]
 
-def get_income_by_id(id_income, session):
-    income = session.query(Income).get(id_income)
+def get_incomes_by_condition(condition, session):
+    incomes = session.query(Income).filter(text(condition)).all()
+
+    return incomes
+
+
+def get_income_by_condition(condition, session):
+    income = session.query(Income).filter(text(condition)).first()
 
     return income
-
-
-# def get_income_by_user(user_id, session):
-#     incomes = session.query(Income).get(user_id)
 
 
 def parse_content(content):
@@ -68,13 +71,16 @@ class IncomeHandler:
 
     @staticmethod
     def delete_income(id_income, session):
-        if (income := get_income_by_id(id_income, session)) is not None:
+        condition = f"id_income = '{id_income}'"
+        if (income := get_income_by_condition(condition, session)) is not None:
             session.delete(income)
             session.commit()
+        # TODO: Проработать исключения
 
     @staticmethod
     def change_income(id_income, content, session):
-        if (income := get_income_by_id(id_income, session)) is not None:
+        condition = f"id_income = '{id_income}'"
+        if (income := get_income_by_condition(condition, session)) is not None:
             name, value, currency = get_parsed_values(content)
 
             if name is not None:
@@ -88,11 +94,20 @@ class IncomeHandler:
             income.modified_date = modified_date
 
             session.commit()
+        # TODO: Проработать исключения
 
     @staticmethod
     def get_income_list(chat_id, session):
-        if (incomes := get_income_by_id(chat_id, session)) is not None:
-            print(incomes)
+        condition = f"id_user = {chat_id}"
+        if (incomes := get_incomes_by_condition(condition, session)) is not None:
+            incomes_list = []
+            for income in incomes:
+                income_dict = {"ID": str(income.id_income), "NAME": income.name}
+                incomes_list.append(income_dict)
+
+            # TODO: Проработать исключения
+
+            return incomes_list
 
     # TODO: Доделать, когда связь м/у таблицами репортов и дохода будет проработана
     @staticmethod

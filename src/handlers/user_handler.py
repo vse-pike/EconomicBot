@@ -5,10 +5,15 @@ class UserHandler:
 
     @staticmethod
     def add_user(chat_id, session):
-        user = User(chat_id)
+        try:
+            user = User(chat_id)
+            session.add(user)
+            session.commit()
+            print("Пользователь успешно создан.")
+        except Exception as e:
+            print("Ошибка при создании пользователя:", str(e))
+            session.rollback()
 
-        session.add(user)
-        session.commit()
 
     # @staticmethod
     # def get_user(chat_id, session):

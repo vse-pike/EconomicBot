@@ -50,7 +50,6 @@ def get_parsed_values(content):
         name = parsed_content.get('NAM')
         value = parsed_content.get('VAL')
         currency = parsed_content.get('CUR')
-    # TODO: Реализовать обработку ошибок
     except KeyError:
         print('Такого ключа не существует')
 
@@ -61,53 +60,72 @@ class IncomeHandler:
 
     @staticmethod
     def add_income(content, chat_id, session):
-        id_income = uuid.uuid4()
-        name, value, currency = get_parsed_values(content)
-        created_date = datetime.now()
-        income = Income(id_income, chat_id, name, value, currency, created_date, created_date)
+        try:
+            id_income = uuid.uuid4()
+            name, value, currency = get_parsed_values(content)
+            created_date = datetime.now()
+            income = Income(id_income, chat_id, name, value, currency, created_date, created_date)
 
-        session.add(income)
-        session.commit()
+            session.add(income)
+            session.commit()
+            print("Доход успешно добавлен:", str(id_income))
+        except Exception as e:
+            print(str(e))
+            session.rollback()
+            raise e
 
     @staticmethod
     def delete_income(id_income, session):
-        condition = f"id_income = '{id_income}'"
-        if (income := get_income_by_condition(condition, session)) is not None:
-            session.delete(income)
-            session.commit()
-        # TODO: Проработать исключения
+        try:
+            condition = f"id_income = '{id_income}'"
+            if (income := get_income_by_condition(condition, session)) is not None:
+                session.delete(income)
+                session.commit()
+            else:
+                raise Exception("Ошибка удаления: не найдена запись по доходу")
+        except Exception as e:
+            print(str(e))
+            session.rollback()
 
     @staticmethod
     def change_income(id_income, content, session):
-        condition = f"id_income = '{id_income}'"
-        if (income := get_income_by_condition(condition, session)) is not None:
-            name, value, currency = get_parsed_values(content)
+        try:
+            condition = f"id_income = '{id_income}'"
+            if (income := get_income_by_condition(condition, session)) is not None:
+                name, value, currency = get_parsed_values(content)
 
-            if name is not None:
-                income.name = name
-            if value is not None:
-                income.value = value
-            if currency is not None:
-                income.currency = currency
+                if name is not None:
+                    income.name = name
+                if value is not None:
+                    income.value = value
+                if currency is not None:
+                    income.currency = currency
 
-            modified_date = datetime.now()
-            income.modified_date = modified_date
+                modified_date = datetime.now()
+                income.modified_date = modified_date
 
-            session.commit()
-        # TODO: Проработать исключения
+                session.commit()
+        except Exception as e:
+            # Обработка ошибки при изменении дохода
+            session.rollback()
+            raise e
+        # TODO: Проработать дополнительные исключения, если необходимо
 
     @staticmethod
     def get_income_list(chat_id, session):
-        condition = f"id_user = {chat_id}"
-        if (incomes := get_incomes_by_condition(condition, session)) is not None:
-            incomes_list = []
-            for income in incomes:
-                income_dict = {"ID": str(income.id_income), "NAME": income.name}
-                incomes_list.append(income_dict)
+        try:
+            condition = f"id_user = {chat_id}"
+            if (incomes := get_incomes_by_condition(condition, session)) is not None:
+                incomes_list = []
+                for income in incomes:
+                    income_dict = {"ID": str(income.id_income), "NAME": income.name}
+                    incomes_list.append(income_dict)
 
-            # TODO: Проработать исключения
-
-            return incomes_list
+                return incomes_list
+        except Exception as e:
+            # Обработка ошибки при получении списка доходов
+            raise e
+        # TODO: Проработать дополнительные исключения, если необходимо
 
     # TODO: Доделать, когда связь м/у таблицами репортов и дохода будет проработана
     @staticmethod

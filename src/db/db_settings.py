@@ -5,7 +5,7 @@ from src.db.db_tables import mapper_registry as m
 
 
 def db_create_engine():
-    path = "postgresql+psycopg2://user:123@localhost:5432/economic-bot"
+    path = "postgresql+psycopg2://user:123@postgres:5432/economic-bot"
     engine = create_engine(path, echo=True)
     m.metadata.create_all(engine)
 

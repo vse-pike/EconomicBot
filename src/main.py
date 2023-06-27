@@ -30,18 +30,15 @@ if __name__ == '__main__':
     ]
 
 
-    # TODO: Реализовать базовую авторизацию. Обработать ошибки
+
     @bot.message_handler(commands=['start'])
     def start_bot(message):
-        # TODO: Убрать хардкод
-        # TODO: Добавить авторизацию
-
         bot.send_message(message.from_user.id, "Инициализация бота")
         bot.set_my_commands(commands)
         UserHandler.add_user(message.from_user.id, session)
 
 
-    # Хендлер для обработки запроса: добавление дохода
+
     @bot.message_handler(commands=['add_income'], content_types=['text'])
     def add_income_bot(command):
         chat_id = command.from_user.id
@@ -51,20 +48,28 @@ if __name__ == '__main__':
         @bot.message_handler(content_types=['text'])
         def income_message(message):
             income_text = message.text
-            IncomeHandler.add_income(income_text, chat_id, session)
-            bot.send_message(command.from_user.id, "Добавлен новый доход")
-            time.sleep(3)
+            try:
+                IncomeHandler.add_income(income_text, chat_id, session)
+                bot.send_message(command.from_user.id, "Добавлен новый доход")
+                time.sleep(3)
+            except Exception as e:
+                bot.send_message(command.from_user.id, "Ошибка добавления дохода:" + str(e))
 
 
     # Хендлер для обработки запроса: удаления дохода
     @bot.message_handler(commands=['delete_income'])
     def delete_income_bot(command):
         chat_id = command.from_user.id
-        income_list = IncomeHandler.get_income_list(chat_id, session)
+        try:
+            income_list = IncomeHandler.get_income_list(chat_id, session)
 
-        keyboard = KeyBoard.generate_income_keyboard(2, "delete_income", income_list)
+            keyboard = KeyBoard.generate_income_keyboard(2, "delete_income", income_list)
 
-        bot.send_message(chat_id, "Выберите доход для удаления:", reply_markup=keyboard)
+            bot.send_message(chat_id, "Выберите доход для удаления:", reply_markup=keyboard)
+        except Exception as e:
+            bot.send_message(command.from_user.id, str(e))
+
+
 
 
     # Хендлер для обработки запроса: изменения существующего запроса

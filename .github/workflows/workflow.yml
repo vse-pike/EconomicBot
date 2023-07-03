@@ -16,8 +16,8 @@ jobs:
       - name: Build and deploy
         uses: appleboy/ssh-action@master
         with:
-          host: 158.160.17.25
-          username: economic-bot
+          host: 51.250.97.59
+          username: v-pike
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |

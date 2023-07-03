@@ -24,4 +24,4 @@ jobs:
             cd ~/EconomicBot/
             git pull origin main
             sudo docker-compose build
-            sudo docker-compose up -d
+            sudo -E env "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" docker-compose up -d

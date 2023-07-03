@@ -4,12 +4,6 @@ from datetime import datetime
 from sqlalchemy import text
 
 
-# commands = [
-#         telebot.types.BotCommand('add_income', 'Добавить доход'),
-#         telebot.types.BotCommand('delete_income', 'Удалить доход'),
-#         telebot.types.BotCommand('change_income', 'Изменить доход'),
-#         telebot.types.BotCommand('income_history', 'Вывести отчет о доходах'),
-#     ]
 
 def get_incomes_by_condition(condition, session):
     incomes = session.query(Income).filter(text(condition)).all()

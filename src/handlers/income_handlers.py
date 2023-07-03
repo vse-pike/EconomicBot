@@ -123,7 +123,8 @@ class IncomeHandler:
 
                 return incomes_list
         except Exception as e:
-            # Обработка ошибки при получении списка доходов
+            print(str(e))
+            session.rollback()
             raise e
         # TODO: Проработать дополнительные исключения, если необходимо
 

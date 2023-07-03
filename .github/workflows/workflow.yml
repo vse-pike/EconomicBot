@@ -1,0 +1,27 @@
+name: EconomicBot-test-delpoy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build and deploy
+        uses: economic-bot/ssh-action@main
+        with:
+          host: 158.160.17.25
+          username: economic-bot
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd ~/EconomicBot/
+            git pull origin main
+            docker-compose build
+            docker-compose up -d

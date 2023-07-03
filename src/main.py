@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
             bot.send_message(chat_id, "Выберите доход для удаления:", reply_markup=keyboard)
         except Exception as e:
-            bot.send_message(command.from_user.id, str(e))
+            bot.send_message(command.from_user.id, "Ошибка удаления дохода:" + str(e))
 
 
 

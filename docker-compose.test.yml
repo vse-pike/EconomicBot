@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   app_test:
-    depends_on: [ postgres_test ]
+    depends_on: [ postgres ]
     build:
       context: .
       dockerfile: app.Dockerfile
@@ -13,14 +13,14 @@ services:
     networks:
       - app_network
 
-  postgres_test:
+  postgres:
     image: postgres:latest
     environment:
       - POSTGRES_DB=${POSTGRES_DB_TEST}
       - POSTGRES_USER=${POSTGRES_USER_TEST}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_TEST}
     volumes:
-      - postgres-test-db:/data/postgres
+      - postgres-db:/data/postgres
     ports:
       - "5432:5432"
     networks:
@@ -30,4 +30,4 @@ networks:
   app_network:
 
 volumes:
-  postgres-test-db:
+  postgres-db:

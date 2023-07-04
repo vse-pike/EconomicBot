@@ -19,6 +19,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB_TEST}
       - POSTGRES_USER=${POSTGRES_USER_TEST}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_TEST}
+      - POSTGRES_CONTAINER_NAME="postgres_test"
     volumes:
       - postgres-test-db:/data/postgres
     ports:

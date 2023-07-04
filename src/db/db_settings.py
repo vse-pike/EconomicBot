@@ -8,7 +8,6 @@ from src.db.db_tables import mapper_registry as m
 
 
 def db_create_engine():
-    # Загрузить переменные среды из файла .env
     load_dotenv()
 
     # Получить значения переменных среды

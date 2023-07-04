@@ -32,7 +32,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
+            echo $BOT_TOKEN_TEST
             cd ~/EconomicBot/
             git pull origin main
-            sudo docker-compose -f docker-compose.test.yml --env-file .env build
-            sudo docker-compose -f docker-compose.test.yml --env-file .env up -d
+            sudo docker-compose -f docker-compose.test.yml --env-file .env-test build
+            sudo docker-compose -f docker-compose.test.yml --env-file .env-test up -d

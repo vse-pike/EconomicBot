@@ -32,7 +32,7 @@ jobs:
           username: v-pike
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script: |
+          run: |
             cd ~/EconomicBot/
             git pull origin main
             sudo docker-compose -f docker-compose.prod.yml build

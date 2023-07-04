@@ -29,5 +29,5 @@ jobs:
           script: |
             cd ~/EconomicBot/
             git pull origin main
-            sudo -E env "BOT_TOKEN_TEST=${{secrets.BOT_TOKEN_TEST}}" docker-compose -f docker-compose.test.yml build
-            sudo -E env "BOT_TOKEN_TEST=${{secrets.BOT_TOKEN_TEST}}" docker-compose -f docker-compose.test.yml up -d
+            sudo -E env $(env | sed 's/^\(.*\)$/export \1/g') docker-compose -f docker-compose.test.yml build
+            sudo -E env $(env | sed 's/^\(.*\)$/export \1/g') docker-compose -f docker-compose.test.yml up -d

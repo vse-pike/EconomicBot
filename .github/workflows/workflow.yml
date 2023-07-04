@@ -34,7 +34,5 @@ jobs:
           script: |
             cd ~/EconomicBot/
             git pull origin main
-            sudo docker-compose -f docker-compose.prod.yml --env-file .env build
-            sudo docker-compose -f docker-compose.prod.yml --env-file .env up -d
             sudo docker-compose -f docker-compose.test.yml --env-file .env build
             sudo docker-compose -f docker-compose.test.yml --env-file .env up -d

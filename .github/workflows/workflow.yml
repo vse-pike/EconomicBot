@@ -9,6 +9,18 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    env:
+      BOT_TOKEN_TEST: ${{ secrets.BOT_TOKEN_TEST }}
+      BOT_TOKEN_PROD: ${{ secrets.BOT_TOKEN_PROD }}
+      POSTGRES_DB_TEST: ${{ secrets.POSTGRES_DB_TEST }}
+      POSTGRES_USER_TEST: ${{ secrets.POSTGRES_USER_TEST }}
+      POSTGRES_PASSWORD_TEST: ${{ secrets.POSTGRES_PASSWORD_TEST }}
+      POSTGRES_DB_PROD: ${{ secrets.POSTGRES_DB_PROD }}
+      POSTGRES_USER_PROD: ${{ secrets.POSTGRES_USER_PROD }}
+      POSTGRES_PASSWORD_PROD: ${{ secrets.POSTGRES_PASSWORD_PROD }}
+      BD_HOST_PORT_TEST: ${{ secrets.BD_HOST_PORT_TEST }}
+      BD_HOST_PORT_PROD: ${{ secrets.BD_HOST_PORT_PROD }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -20,17 +32,6 @@ jobs:
           username: v-pike
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          env:
-            BOT_TOKEN_TEST: ${{ secrets.BOT_TOKEN_TEST }}
-            BOT_TOKEN_PROD: ${{ secrets.BOT_TOKEN_PROD }}
-            POSTGRES_DB_TEST: ${{ secrets.POSTGRES_DB_TEST }}
-            POSTGRES_USER_TEST: ${{ secrets.POSTGRES_USER_TEST }}
-            POSTGRES_PASSWORD_TEST: ${{ secrets.POSTGRES_PASSWORD_TEST }}
-            POSTGRES_DB_PROD: ${{ secrets.POSTGRES_DB_PROD }}
-            POSTGRES_USER_PROD: ${{ secrets.POSTGRES_USER_PROD }}
-            POSTGRES_PASSWORD_PROD: ${{ secrets.POSTGRES_PASSWORD_PROD }}
-            BD_HOST_PORT_TEST: ${{ secrets.BD_HOST_PORT_TEST }}
-            BD_HOST_PORT_PROD: ${{ secrets.BD_HOST_PORT_PROD }}
           script: |
             cd ~/EconomicBot/
             git pull origin main

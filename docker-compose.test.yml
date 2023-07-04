@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  app_test:
+    depends_on: [ postgres_test ]
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN_TEST}
+    networks:
+      - app_network
+
+  postgres_test:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB_TEST}
+      - POSTGRES_USER=${POSTGRES_USER_TEST}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_TEST}
+    volumes:
+      - postgres-test-db:/data/postgres
+    ports:
+      - BD_HOST_PORT=${BD_HOST_PORT_TEST}
+    networks:
+      - app_network
+
+networks:
+  app_network:
+
+volumes:
+  postgres-test-db:

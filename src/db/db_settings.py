@@ -1,3 +1,6 @@
+import os
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -5,8 +8,19 @@ from src.db.db_tables import mapper_registry as m
 
 
 def db_create_engine():
-    path = "postgresql+psycopg2://user:123@postgres:5432/economic-bot"
-    engine = create_engine(path, echo=True)
+    # Загрузить переменные среды из файла .env
+    load_dotenv()
+
+    # Получить значения переменных среды
+    db_host_port = os.getenv("BD_PORT")
+    db_user = os.getenv("POSTGRES_USER")
+    db_password = os.getenv("POSTGRES_PASSWORD")
+    db_name = os.getenv("POSTGRES_DB")
+
+    # Создать строку подключения
+    db_url = f"postgresql+psycopg2://{db_user}:{db_password}@{db_host_port}/{db_name}"
+
+    engine = create_engine(db_url, echo=True)
     m.metadata.create_all(engine)
 
     return engine

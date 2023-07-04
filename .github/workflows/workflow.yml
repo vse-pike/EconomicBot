@@ -31,4 +31,4 @@ jobs:
             cd ~/EconomicBot/
             git pull origin main
             sudo docker-compose -f docker-compose.test.yml build
-            sudo -E env BOT_TOKEN_TEST=$BOT_TOKEN_TEST docker-compose -f docker-compose.test.yml up -d
+            sudo -E env "BOT_TOKEN_TEST=$BOT_TOKEN_TEST" docker-compose -f docker-compose.test.yml up -d

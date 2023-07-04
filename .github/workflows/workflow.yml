@@ -28,6 +28,6 @@ jobs:
           script: |
             cd ~/EconomicBot/
             git pull origin main
-            echo $BD_HOST_PORT_TEST
+            sudo docker-compose -f docker-compose.test.yml down --remove-orphans
             sudo -E env "BOT_TOKEN_TEST=$BOT_TOKEN_TEST" env "POSTGRES_DB_TEST=$POSTGRES_DB_TEST" env "POSTGRES_USER_TEST=$POSTGRES_USER_TEST" env "POSTGRES_PASSWORD_TEST=$POSTGRES_PASSWORD_TEST" env "BD_HOST_PORT_TEST=$BD_HOST_PORT_TEST" docker-compose -f docker-compose.test.yml build
             sudo -E env "BOT_TOKEN_TEST=$BOT_TOKEN_TEST" env "POSTGRES_DB_TEST=$POSTGRES_DB_TEST" env "POSTGRES_USER_TEST=$POSTGRES_USER_TEST" env "POSTGRES_PASSWORD_TEST=$POSTGRES_PASSWORD_TEST" env "BD_HOST_PORT_TEST=$BD_HOST_PORT_TEST" docker-compose -f docker-compose.test.yml up -d

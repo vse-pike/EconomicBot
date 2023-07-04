@@ -12,7 +12,9 @@ if __name__ == '__main__':
     load_dotenv()
     # Получение значения токена бота из переменных окружения
     bot_token = os.getenv("BOT_TOKEN")
+    print("ВЫЖДЛФЖВЫДЛ")
     print(bot_token)
+    print(Exception(bot_token))
 
     session = Db().session
 

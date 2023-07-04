@@ -20,7 +20,6 @@ jobs:
           POSTGRES_DB_TEST: ${{ secrets.POSTGRES_DB_TEST }}
           POSTGRES_USER_TEST: ${{ secrets.POSTGRES_USER_TEST }}
           POSTGRES_PASSWORD_TEST: ${{ secrets.POSTGRES_PASSWORD_TEST }}
-          BD_HOST_PORT_TEST: ${{ secrets.BD_HOST_PORT_TEST }}
         with:
           host: 51.250.97.59
           username: v-pike

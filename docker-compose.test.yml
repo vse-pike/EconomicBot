@@ -22,7 +22,7 @@ services:
     volumes:
       - postgres-test-db:/data/postgres
     ports:
-      - BD_HOST_PORT=${BD_HOST_PORT_TEST}
+      - "5432:5432"
     networks:
       - app_network
 

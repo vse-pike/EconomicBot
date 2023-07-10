@@ -13,15 +13,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Connect to VM via SSH
+      - name: Build and run
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: 158.160.9.5
           username: v-pike
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-
-      - name: Git pull master
         run: |
           cd ~/EconomicBot/
           git pull origin main

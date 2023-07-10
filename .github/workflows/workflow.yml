@@ -27,6 +27,7 @@ jobs:
           port: 22
           script: |
             cd ~/EconomicBot/
+            echo ${{ secrets.SSH_PRIVATE_KEY }}
             git pull origin main
             sudo -E env "BOT_TOKEN_TEST=$BOT_TOKEN_TEST" "POSTGRES_DB_TEST=$POSTGRES_DB_TEST" "POSTGRES_USER_TEST=$POSTGRES_USER_TEST" "POSTGRES_PASSWORD_TEST=$POSTGRES_PASSWORD_TEST" "BD_HOST_PORT_TEST=$BD_HOST_PORT_TEST" docker-compose -f docker-compose.test.yml down --remove-orphans
             sudo -E env "BOT_TOKEN_TEST=$BOT_TOKEN_TEST" "POSTGRES_DB_TEST=$POSTGRES_DB_TEST" "POSTGRES_USER_TEST=$POSTGRES_USER_TEST" "POSTGRES_PASSWORD_TEST=$POSTGRES_PASSWORD_TEST" "BD_HOST_PORT_TEST=$BD_HOST_PORT_TEST" docker-compose -f docker-compose.test.yml build

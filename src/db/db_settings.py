@@ -22,14 +22,10 @@ def db_create_engine():
     db_url = f"postgresql+psycopg2://{db_user}:{db_password}@{db_host}:5432/{db_name}"
     print(db_url)
 
-    engine = None
-    while not engine:
-        try:
-            engine = create_engine(db_url, echo=True)
-            m.metadata.create_all(engine)
-        except OperationalError as e:
-            print(e)
-            time.sleep(5)
+    time.sleep(15)
+
+    engine = create_engine(db_url, echo=True)
+    m.metadata.create_all(engine)
 
     return engine
 

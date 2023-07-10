@@ -29,6 +29,5 @@ jobs:
           cd ~/EconomicBot/
           git pull origin dev
           echo "Start"
-          sudo -E env "BOT_TOKEN_TEST=${{ secrets.BOT_TOKEN_TEST }}"
-          echo "$BOT_TOKEN_TEST"
-          echo ${{ secrets.BOT_TOKEN_TEST }}
+          export BOT_TOKEN_TEST=${{ secrets.BOT_TOKEN_TEST }}
+          echo $BOT_TOKEN_TEST

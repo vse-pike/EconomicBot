@@ -20,6 +20,6 @@ jobs:
           username: v-pike
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script:
+          script: |
             cd ~/EconomicBot/
             git pull origin main

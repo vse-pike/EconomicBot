@@ -2,7 +2,6 @@ version: "3.9"
 
 services:
   app_test:
-    depends_on: [ postgres-test ]
     build:
       context: .
       dockerfile: app.Dockerfile
@@ -15,7 +14,8 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
-  postgres-test:
+  postgres_test:
+    depends_on: [ app_test ]
     image: postgres:alpine
     environment:
       - POSTGRES_HOST=158.160.9.5

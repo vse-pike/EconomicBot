@@ -16,7 +16,7 @@ jobs:
       - name: Connect to VM via SSH
         uses: appleboy/ssh-action@v0.1.4
         with:
-          host: 51.250.97.59
+          host: 158.160.9.5
           username: v-pike
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22

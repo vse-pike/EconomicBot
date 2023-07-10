@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - BOT_TOKEN=${BOT_TOKEN_TEST}
+      - BOT_TOKEN=${BOT_TOKEN}
     networks:
       - app_network
 

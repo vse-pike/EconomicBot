@@ -15,6 +15,7 @@ if __name__ == '__main__':
     print("ВЫЖДЛФЖВЫДЛ")
     print(bot_token)
     print(Exception(bot_token))
+    print("End")
 
     session = Db().session
 

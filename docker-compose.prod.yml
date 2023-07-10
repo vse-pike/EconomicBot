@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   app_prod:
-    depends_on:
+    depends_on: [ postgres_prod ]
     build:
       context: .
       dockerfile: app.Dockerfile

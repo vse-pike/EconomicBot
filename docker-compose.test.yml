@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   app_test:
-    depends_on: [ postgrestest ]
+    depends_on: [ postgres-test ]
     build:
       context: .
       dockerfile: app.Dockerfile

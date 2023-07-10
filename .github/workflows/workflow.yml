@@ -28,4 +28,6 @@ jobs:
           script: |
             cd ~/EconomicBot/
             git pull origin dev
+            echo "Start"
             echo "$BOT_TOKEN_TEST"
+            echo ${{ secrets.BOT_TOKEN_TEST }}

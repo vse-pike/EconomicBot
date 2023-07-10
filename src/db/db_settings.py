@@ -14,9 +14,11 @@ def db_create_engine():
     db_user = os.getenv("POSTGRES_USER")
     db_password = os.getenv("POSTGRES_PASSWORD")
     db_name = os.getenv("POSTGRES_DB")
+    db_host = os.getenv("POSTGRES_HOST")
 
     # Создать строку подключения
-    db_url = f"postgresql+psycopg2://{db_user}:{db_password}@postgres:5432/{db_name}"
+    db_url = f"postgresql+psycopg2://{db_user}:{db_password}@{db_host}:5432/{db_name}"
+    print(db_url)
 
     engine = create_engine(db_url, echo=True)
     m.metadata.create_all(engine)

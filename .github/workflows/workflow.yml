@@ -25,10 +25,10 @@ jobs:
           username: v-pike
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script: |
-            cd ~/EconomicBot/
-            git pull origin dev
-            echo "Start"
-            sudo -E env "BOT_TOKEN_TEST=${{ secrets.BOT_TOKEN_TEST }}"
-            echo ${{ BOT_TOKEN_TEST }}
-            echo ${{ secrets.BOT_TOKEN_TEST }}
+      - run:
+          cd ~/EconomicBot/
+          git pull origin dev
+          echo "Start"
+          sudo -E env "BOT_TOKEN_TEST=${{ secrets.BOT_TOKEN_TEST }}"
+          echo "$BOT_TOKEN_TEST"
+          echo ${{ secrets.BOT_TOKEN_TEST }}

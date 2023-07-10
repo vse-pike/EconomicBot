@@ -1,6 +1,8 @@
 import os
+import time
 
 from dotenv import load_dotenv
+from psycopg2 import OperationalError
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -20,8 +22,14 @@ def db_create_engine():
     db_url = f"postgresql+psycopg2://{db_user}:{db_password}@{db_host}:5432/{db_name}"
     print(db_url)
 
-    engine = create_engine(db_url, echo=True)
-    m.metadata.create_all(engine)
+    engine = None
+    while not engine:
+        try:
+            engine = create_engine(db_url, echo=True)
+            m.metadata.create_all(engine)
+        except OperationalError as e:
+            print(e)
+            time.sleep(5)
 
     return engine
 

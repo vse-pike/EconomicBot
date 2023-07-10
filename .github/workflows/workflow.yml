@@ -29,11 +29,8 @@ jobs:
             cd ~/EconomicBot/
             git pull origin dev
             echo "Start"
-            export BOT_TOKEN=${{env.BOT_TOKEN_TEST}} POSTGRES_DB=${{env.POSTGRES_DB_TEST}} POSTGRES_USER=${{env.POSTGRES_USER_TEST}} POSTGRES_PASSWORD=${{env.POSTGRES_PASSWORD_TEST}}
-            echo "BOT_TOKEN: $BOT_TOKEN_TEST"
-            echo "POSTGRES_DB: $POSTGRES_DB_TEST"
-            echo "POSTGRES_USER: $POSTGRES_USER_TEST"
-            echo "POSTGRES_PASSWORD: $POSTGRES_PASSWORD_TEST"
+            export BOT_TOKEN=${{env.BOT_TOKEN_TEST}}
+            echo $BOT_TOKEN_TEST
             docker-compose -f docker-compose.test.yml down --remove-orphans
             docker-compose -f docker-compose.test.yml build app_test
             docker-compose -f docker-compose.test.yml up -d app_test

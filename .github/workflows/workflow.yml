@@ -12,20 +12,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        env:
-          BOT_TOKEN_TEST: ${{ secrets.BOT_TOKEN_TEST }}
-          POSTGRES_DB_TEST: ${{ secrets.POSTGRES_DB_TEST }}
-          POSTGRES_USER_TEST: ${{ secrets.POSTGRES_USER_TEST }}
-          POSTGRES_PASSWORD_TEST: ${{ secrets.POSTGRES_PASSWORD_TEST }}
+
+      - name: Connect to VM via SSH
+        uses: appleboy/ssh-action@master
         with:
           host: 51.250.97.59
           username: v-pike
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script: |
-            cd ~/EconomicBot/
-            echo ${{ secrets.SSH_PRIVATE_KEY }}
-            git pull origin main
-            sudo -E env "BOT_TOKEN_TEST=$BOT_TOKEN_TEST" "POSTGRES_DB_TEST=$POSTGRES_DB_TEST" "POSTGRES_USER_TEST=$POSTGRES_USER_TEST" "POSTGRES_PASSWORD_TEST=$POSTGRES_PASSWORD_TEST" "BD_HOST_PORT_TEST=$BD_HOST_PORT_TEST" docker-compose -f docker-compose.test.yml down --remove-orphans
-            sudo -E env "BOT_TOKEN_TEST=$BOT_TOKEN_TEST" "POSTGRES_DB_TEST=$POSTGRES_DB_TEST" "POSTGRES_USER_TEST=$POSTGRES_USER_TEST" "POSTGRES_PASSWORD_TEST=$POSTGRES_PASSWORD_TEST" "BD_HOST_PORT_TEST=$BD_HOST_PORT_TEST" docker-compose -f docker-compose.test.yml build
-            sudo -E env "BOT_TOKEN_TEST=$BOT_TOKEN_TEST" "POSTGRES_DB_TEST=$POSTGRES_DB_TEST" "POSTGRES_USER_TEST=$POSTGRES_USER_TEST" "POSTGRES_PASSWORD_TEST=$POSTGRES_PASSWORD_TEST" "BD_HOST_PORT_TEST=$BD_HOST_PORT_TEST" docker-compose -f docker-compose.test.yml up -d

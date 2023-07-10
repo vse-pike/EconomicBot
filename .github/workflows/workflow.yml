@@ -12,9 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Build and deploy
-        uses: appleboy/ssh-action@master
         env:
           BOT_TOKEN_TEST: ${{ secrets.BOT_TOKEN_TEST }}
           POSTGRES_DB_TEST: ${{ secrets.POSTGRES_DB_TEST }}

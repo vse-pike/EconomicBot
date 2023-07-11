@@ -1,4 +1,4 @@
-name: build-and-deploy-test
+name: build-and-deploy-on-test
 
 on:
   push:
@@ -6,14 +6,14 @@ on:
       - dev
 
 jobs:
-  build-and-deploy-test:
+  build-and-deploy-on-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Build and run
+      - name: Build docker image and run
         env:
           BOT_TOKEN_TEST: ${{ secrets.BOT_TOKEN_TEST }}
           POSTGRES_DB_TEST: ${{ secrets.POSTGRES_DB_TEST }}
@@ -21,8 +21,8 @@ jobs:
           POSTGRES_PASSWORD_TEST: ${{ secrets.POSTGRES_PASSWORD_TEST }}
         uses: appleboy/ssh-action@v0.1.4
         with:
-          host: 158.160.9.5
-          username: v-pike
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.VM_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
@@ -30,10 +30,6 @@ jobs:
             git pull origin dev
             echo "Start"
             export BOT_TOKEN=${{env.BOT_TOKEN_TEST}} POSTGRES_DB=${{env.POSTGRES_DB_TEST}} POSTGRES_USER=${{env.POSTGRES_USER_TEST}} POSTGRES_PASSWORD=${{env.POSTGRES_PASSWORD_TEST}}
-            echo $BOT_TOKEN
-            echo $POSTGRES_DB
-            echo $POSTGRES_USER
-            echo $POSTGRES_PASSWORD
             docker-compose -f docker-compose.test.yml down --remove-orphans
             docker-compose -f docker-compose.test.yml build
-            docker-compose -f docker-compose.test.yml up
+            docker-compose -f docker-compose.test.yml up -d

@@ -1,0 +1,35 @@
+name: build-and-deploy-on-prod
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy-on-prod:
+    runs-on: ubuntu-laPROD
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build docker image and run
+        env:
+          BOT_TOKEN_PROD: ${{ secrets.BOT_TOKEN_PROD }}
+          POSTGRES_DB_PROD: ${{ secrets.POSTGRES_DB_PROD }}
+          POSTGRES_USER_PROD: ${{ secrets.POSTGRES_USER_PROD }}
+          POSTGRES_PASSWORD_PROD: ${{ secrets.POSTGRES_PASSWORD_PROD }}
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.VM_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd ~/EconomicBot/
+            git pull origin dev
+            echo "Start"
+            export BOT_TOKEN=${{env.BOT_TOKEN_PROD}} POSTGRES_DB=${{env.POSTGRES_DB_PROD}} POSTGRES_USER=${{env.POSTGRES_USER_PROD}} POSTGRES_PASSWORD=${{env.POSTGRES_PASSWORD_PROD}}
+            docker-compose -f docker-compose.prod.yml down --remove-orphans
+            docker-compose -f docker-compose.prod.yml build
+            docker-compose -f docker-compose.prod.yml up -d

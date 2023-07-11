@@ -35,4 +35,5 @@ networks:
   app_network:
 
 volumes:
-  postgres-prod-db:
+  postgres-db:
+    driver: local

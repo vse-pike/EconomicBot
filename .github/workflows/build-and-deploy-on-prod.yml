@@ -27,7 +27,7 @@ jobs:
           port: 22
           script: |
             cd ~/EconomicBot/
-            git pull origin dev
+            git pull origin main
             echo "Start"
             export BOT_TOKEN=${{env.BOT_TOKEN_PROD}} POSTGRES_DB=${{env.POSTGRES_DB_PROD}} POSTGRES_USER=${{env.POSTGRES_USER_PROD}} POSTGRES_PASSWORD=${{env.POSTGRES_PASSWORD_PROD}}
             docker-compose -f docker-compose.prod.yml down --remove-orphans

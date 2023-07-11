@@ -30,6 +30,6 @@ jobs:
             git pull origin main
             echo "Start"
             export BOT_TOKEN=${{env.BOT_TOKEN_PROD}} POSTGRES_DB=${{env.POSTGRES_DB_PROD}} POSTGRES_USER=${{env.POSTGRES_USER_PROD}} POSTGRES_PASSWORD=${{env.POSTGRES_PASSWORD_PROD}}
-            docker-compose -f docker-compose.prod.yml down --remove-orphans
-            docker-compose -f docker-compose.prod.yml build
-            docker-compose -f docker-compose.prod.yml up -d
+            docker-compose -f docker-compose-prod.yml down --remove-orphans
+            docker-compose -f docker-compose-prod.yml build
+            docker-compose -f docker-compose-prod.yml up -d

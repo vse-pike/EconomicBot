@@ -15,7 +15,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     networks:
-      - app_network
+      - app_prod_network
 
   postgres_prod:
     image: postgres:alpine
@@ -29,10 +29,10 @@ services:
     ports:
       - "5433:5433"
     networks:
-      - app_network
+      - app_prod_network
 
 networks:
-  app_network:
+  app_prod_network:
 
 volumes:
   postgres_prod:

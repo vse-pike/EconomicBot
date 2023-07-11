@@ -9,19 +9,23 @@ services:
     ports:
       - "8081:8080"
     environment:
-      - BOT_TOKEN=${BOT_TOKEN_PROD}
+      - BOT_TOKEN=${BOT_TOKEN}
+      - POSTGRES_HOST=postgres_prod
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - app_network
 
   postgres_prod:
-    image: postgres:latest
+    image: postgres:alpine
     environment:
-      - POSTGRES_DB=${POSTGRES_DB_PROD}
-      - POSTGRES_USER=${POSTGRES_USER_PROD}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_PROD}
-      - POSTGRES_CONTAINER_NAME="postgres_prod"
+      - POSTGRES_HOST=postgres_prod
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - postgres-prod-db:/data/postgres
+      - postgres-db:/data/postgres
     ports:
       - "5432:5432"
     networks:
